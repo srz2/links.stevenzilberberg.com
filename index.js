@@ -113,4 +113,6 @@ app.post('/', async (req, res) => {
 console.log('Starting server...')
 app.listen(config.PORT, () => {
     console.log(`Listening to ${config.PORT}`)
-},)
+})
+
+module.exports = app;
