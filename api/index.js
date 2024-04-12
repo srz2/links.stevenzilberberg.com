@@ -96,6 +96,16 @@ app.post('/', async (req, res) => {
         return;
     }
 
+    // Require Short and Original Urls
+    if (!req.body.ShortUrl || !req.body.OriginalUrl){
+        res.status(400).json({
+            "message": "short and original urls are required",
+            "ShortUrl": req.body.ShortUrl ?? 'Not Given',
+            'OriginalUrl': req.body.OriginalUrl ?? 'Not Given'
+        })
+        return;
+    }
+
     const newLink = new Link({
         ShortUrl: req.body.ShortUrl,
         OriginalUrl: req.body.OriginalUrl
