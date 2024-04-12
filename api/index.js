@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser')
-const config = require('./config/config');
-const Link = require('./models/Link')
+const config = require('../config/config');
+const Link = require('../models/Link')
 const mongoose = require('mongoose')
 
 const express = require('express');
