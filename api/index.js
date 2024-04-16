@@ -45,7 +45,7 @@ app.get('/links/list', async (req, res) => {
     })
 });
 
-// Get an existing link
+// Redirect to an existing link
 app.get('/:linkId', async (req, res) => {
     const part = req.params.linkId;
 
@@ -76,6 +76,35 @@ app.get('/:linkId', async (req, res) => {
         })
     })
 });
+
+// Get an existing link stats
+app.get('/:linkId/stats', async (req, res) => {
+    const linkId = req.params.linkId;
+    console.log(linkId)
+
+    const existingLink = await Link.findOne({
+        ShortUrl: linkId
+    }).then(link => {
+        if (link) {
+            res.status(200).json({
+                "message": 'Short link stats for: ' + linkId,
+                "link": link
+            })
+        } else {
+            res.status(404).json({
+                "message": 'Short link stats does not exist'
+            })
+        }
+    }).catch(err => {
+        console.log('Unexpected error')
+        console.log(err)
+        res.status(500).json({
+            "message": 'unknown error',
+            error: err,
+            status: 500
+        })
+    })
+})
 
 // Create a new short link
 app.post('/', async (req, res) => {    
