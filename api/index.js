@@ -67,6 +67,7 @@ app.get('/:linkId', async (req, res) => {
         }
     })
     .catch(err => {
+        console.log('Unexpected error')
         console.log(err)
         res.status(500).json({
             "message": 'unknown error',
@@ -106,9 +107,16 @@ app.post('/', async (req, res) => {
         return;
     }
 
+    // Append http to url if missing
+    let redirectUrl = req.body.OriginalUrl;
+    if (!(req.body.OriginalUrl.startsWith('http://') || req.body.OriginalUrl.startsWith('https://'))){
+        console.log('Adding missing protocol')
+        redirectUrl = `https://${redirectUrl}`
+    }
+
     const newLink = new Link({
         ShortUrl: req.body.ShortUrl,
-        OriginalUrl: req.body.OriginalUrl
+        OriginalUrl: redirectUrl
     })
     await newLink.save();
 
