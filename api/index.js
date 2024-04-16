@@ -156,6 +156,37 @@ app.post('/', async (req, res) => {
     })
 });
 
+app.delete('/:linkId', async (req, res) => {
+    const linkId = req.params.linkId;
+    console.log(linkId);
+
+    const existingLink = await Link.findOne({_id: linkId})
+    .then(async (link) => {
+        if (!link){
+            res.status(404).json({
+                'message': 'Unable to delete link, it does not exist',
+                'id': linkId
+            })
+        } else {
+            await Link.deleteOne({
+                _id: linkId
+            }).then(result => {
+                console.log('Successfully deleted ' + linkId)
+                res.status(200).json({
+                    message: 'Successfully deleted link',
+                    id: linkId
+                })
+            }).catch(err => {
+                console.log('Failed to delete ' + linkId)
+                res.status(500).json({
+                    message: 'Failed to delete link',
+                    error: err
+                })
+            })
+        }
+    })
+})
+
 // Start the server
 console.log('Starting server...')
 app.listen(config.PORT, () => {
